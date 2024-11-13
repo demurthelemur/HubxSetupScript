@@ -49,15 +49,15 @@ if ! rbenv versions | grep -q 3.0.0; then
 fi
 rbenv global 3.0.0
 
-# # Check if xcode-install is already installed
-# echo "Checking for xcode-install..."
-# if ! gem list -i xcode-install &>/dev/null; then
-#     echo "xcode-install not found. Installing xcode-install gem..."
-#     sudo gem install xcode-install
-#     echo "xcode-install gem installed successfully."
-# else
-#     echo "xcode-install gem is already installed."
-# fi
+# Check if xcode-install is already installed
+echo "Checking for xcode-install..."
+if ! gem list -i xcode-install &>/dev/null; then
+    echo "xcode-install not found. Installing xcode-install gem..."
+    sudo gem install xcode-install
+    echo "xcode-install gem installed successfully."
+else
+    echo "xcode-install gem is already installed."
+fi
 
 # Prompt the user for Xcode version
 read -p "Enter the Xcode version you want to install (or type 'skip' to skip installation): " XCODE_VERSION
