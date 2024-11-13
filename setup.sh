@@ -1,4 +1,19 @@
 #!/bin/bash
+
+# Function to install a cask application if not already installed
+install_cask() {
+    local app_name=$1
+    local cask_name=$2
+    echo "Checking for $app_name..."
+    if ! brew list --cask "$cask_name" &>/dev/null; then
+        echo "$app_name not found. Installing $app_name..."
+        brew install --cask "$cask_name"
+        echo "$app_name installed successfully."
+    else
+        echo "$app_name is already installed."
+    fi
+}
+
 echo "Starting the setup script"
 # Install Xcode Command Line Tools
 echo "Checking for Xcode Command Line Tools..."
@@ -86,13 +101,27 @@ else
 fi
 
 # Prompt user for the Node.js version to install
-read -p "Enter the Node.js version you want to install (e.g., 16.20.2): " NODE_VERSION
+read -p "Enter the Node.js version you want to install e.g., 16.20.2 (or type 'skip' to skip installation): " NODE_VERSION
 
 # Install the specified version of Node.js using NVM and set it as the default
-echo "Installing Node.js version $NODE_VERSION..."
-nvm install "$NODE_VERSION"
-nvm use "$NODE_VERSION"
-nvm alias default "$NODE_VERSION"
-echo "Node.js version $NODE_VERSION installed and set as the default."
-echo "Check node version after installation, you may need to add NVM and Node to PATH for them to work properly"
+if [ "$NODE_VERSION" != "skip" ]; then
+  echo "Installing Node.js version $NODE_VERSION..."
+  nvm install "$NODE_VERSION"
+  nvm use "$NODE_VERSION"
+  nvm alias default "$NODE_VERSION"
+  echo "Node.js version $NODE_VERSION installed and set as the default."
+  echo "Check node version after installation, you may need to add NVM and Node to PATH for them to work properly"
+fi
+
+# Update Homebrew to ensure the latest casks are available
+brew update
+
+# Install each application
+install_cask "Visual Studio Code" "visual-studio-code"
+install_cask "Slack" "slack"
+install_cask "Figma" "figma"
+install_cask "Notion" "notion"
+install_cask "Android Studio" "android-studio"
+
+echo "All specified applications are installed."
 
