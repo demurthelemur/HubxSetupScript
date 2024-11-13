@@ -113,15 +113,26 @@ if [ "$NODE_VERSION" != "skip" ]; then
   echo "Check node version after installation, you may need to add NVM and Node to PATH for them to work properly"
 fi
 
-# Update Homebrew to ensure the latest casks are available
-brew update
 
 # Install each application
-install_cask "Visual Studio Code" "visual-studio-code"
-install_cask "Slack" "slack"
-install_cask "Figma" "figma"
-install_cask "Notion" "notion"
-install_cask "Android Studio" "android-studio"
+echo "The script will now install: Vscode, Slack, Figma, Notion and android studio. You can this part if you want"
+read -p "Type skip if you want to skip cask installations: " CASK_INSTALL
+# Update Homebrew to ensure the latest casks are available
+brew update
+if [ "$CASK_INSTALL" != "skip" ]; then
+  install_cask "Visual Studio Code" "visual-studio-code"
+  install_cask "Slack" "slack"
+  install_cask "Figma" "figma"
+  install_cask "Notion" "notion"
+  install_cask "Android Studio" "android-studio"
+  echo "All specified applications are installed."
+fi
 
-echo "All specified applications are installed."
 
+#Git config
+echo "Starting git config: "
+read -p "Enter your Git user name: " GIT_USER_NAME
+git config --global user.name "$GIT_USER_NAME"
+
+read -p "Enter your Git user name: " GIT_EMAIL
+git config --global user.email "$GIT_EMAIL"
