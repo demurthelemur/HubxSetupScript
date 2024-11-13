@@ -69,3 +69,30 @@ if ! command -v pod &>/dev/null; then
 else
     echo "CocoaPods is already installed."
 fi
+
+# Install NVM (Node Version Manager)
+echo "Checking for NVM..."
+if ! command -v nvm &>/dev/null; then
+    echo "NVM not found. Installing NVM..."
+    # Download and install NVM
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+
+    # Load NVM into the current shell session
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    echo "NVM installed successfully."
+else
+    echo "NVM is already installed."
+fi
+
+# Prompt user for the Node.js version to install
+read -p "Enter the Node.js version you want to install (e.g., 16.20.2): " NODE_VERSION
+
+# Install the specified version of Node.js using NVM and set it as the default
+echo "Installing Node.js version $NODE_VERSION..."
+nvm install "$NODE_VERSION"
+nvm use "$NODE_VERSION"
+nvm alias default "$NODE_VERSION"
+echo "Node.js version $NODE_VERSION installed and set as the default."
+echo "Check node version after installation, you may need to add NVM and Node to PATH for them to work properly"
+
